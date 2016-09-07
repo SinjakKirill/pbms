@@ -13,18 +13,105 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/textView"
+        android:text="Absolute:"
+        android:id="@+id/Absolute"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="15dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_below="@+id/textView"
+        android:text="GETFILESDIR"
+        android:id="@+id/GETFILESDIR_button"
+        android:layout_below="@+id/Name"
         android:layout_alignParentStart="true"
         android:layout_marginTop="83dp"
         android:onClick="getFilesDir"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name:"
+        android:id="@+id/Name"
+        android:layout_below="@+id/Absolute"
+        android:layout_alignParentStart="true"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Path:"
+        android:id="@+id/Path"
+        android:layout_below="@+id/Name"
+        android:layout_alignParentStart="true"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Read/Write:"
+        android:id="@+id/ReadWrite"
+        android:layout_below="@+id/Path"
+        android:layout_alignParentStart="true"
+        android:textSize="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="External:"
+        android:id="@+id/External"
+        android:layout_below="@+id/ReadWrite"
+        android:layout_alignParentStart="true"
+        android:textSize="15dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GETCACHEDIR"
+        android:id="@+id/GETCACHEDIR_button"
+        android:layout_below="@+id/GETFILESDIR_button"
+        android:layout_alignParentStart="true"
+        android:onClick="getCacheDir"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GETEXTERNALFILESDIR"
+        android:id="@+id/GETEXTERNALFILESDIR_button"
+        android:layout_below="@+id/GETCACHEDIR_button"
+        android:layout_alignParentStart="true"
+        android:onClick="getExternalFilesDir"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GETEXTERNALCACHEDIR"
+        android:id="@+id/GETEXTERNALCACHEDIR_button"
+        android:layout_below="@+id/GETEXTERNALFILESDIR_button"
+        android:layout_alignParentStart="true"
+        android:onClick="getExternalCacheDir"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GETEXTERNALSTORAGEDIRECTORY"
+        android:id="@+id/GETEXTERNALSTORAGEDIRECTORY_button"
+        android:layout_below="@+id/GETEXTERNALCACHEDIR_button"
+        android:layout_alignParentStart="true"
+        android:onClick="getExternalStoregeDirectory"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GETEXTERNALSTORAGEPUBLICDIRECTORY"
+        android:id="@+id/GETEXTERNALSTORAGEPUBLICDIRECTORY_button"
+        android:layout_below="@+id/GETEXTERNALSTORAGEDIRECTORY_button"
+        android:layout_alignParentStart="true"
+        android:onClick="getExternalStoragePublicDirectory"/>
+
 </RelativeLayout>
