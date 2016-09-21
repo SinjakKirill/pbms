@@ -34,8 +34,12 @@ public class MainActivity extends AppCompatActivity {
             try{
                 FileWriter fw = new FileWriter(f, true);
                 BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(textName.getText() + "; " + textSurname.getText() + "; " + "\r\n");
+                bw.write(textName.getText() + " " + textSurname.getText() + "; " + "\r\n");
                 bw.close();
+                textName.setText("");
+                textSurname.setText("");
+                textName.setHint("Name");
+                textSurname.setHint("Surname");
                 Log.d("Log_2", "Данные записаны в файл " + fileName);
             }
             catch (IOException e){
@@ -68,13 +72,12 @@ public class MainActivity extends AppCompatActivity {
         try{
             FileReader fr = new FileReader(f);
             BufferedReader br = new BufferedReader(fr);
-            //byte[] buf = new byte(f.length());
-            //String s =  new String(br.read(), "utf-16");
-
-            /*FileWriter fw = new FileWriter(f, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(textName.getText() + "; " + textSurname.getText() + "; " + "\r\n");
-            bw.close();*/
+            char[] buf = new char[(int)f.length()];
+            br.read(buf);
+            br.close();
+            TextView dataText = (TextView) findViewById(R.id.datatextView);
+            String data = new String(buf);
+            dataText.setText(data);
             Log.d("Log_2", "Данные считаны с файла " + fileName);
         }
         catch(IOException e){
