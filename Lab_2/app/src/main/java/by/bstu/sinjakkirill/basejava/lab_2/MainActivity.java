@@ -9,12 +9,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,26 @@ public class MainActivity extends AppCompatActivity {
             catch (IOException e){
                 Log.d("Log_02", "Файл " + fileName + " не создан");
             }
+        }
+    }
+
+    protected void readFile(View v){
+        final String fileName = "Base_Lab02.txt";
+        File f = new File(super.getFilesDir(), fileName);
+        try{
+            FileReader fr = new FileReader(f);
+            BufferedReader br = new BufferedReader(fr);
+            //byte[] buf = new byte(f.length());
+            //String s =  new String(br.read(), "utf-16");
+
+            /*FileWriter fw = new FileWriter(f, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(textName.getText() + "; " + textSurname.getText() + "; " + "\r\n");
+            bw.close();*/
+            Log.d("Log_2", "Данные считаны с файла " + fileName);
+        }
+        catch(IOException e){
+            Log.d("Log_2", "Не удалось открыть " + fileName);
         }
     }
 
