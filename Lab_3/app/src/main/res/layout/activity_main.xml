@@ -80,7 +80,7 @@
         android:ems="10"
         android:layout_below="@+id/textView5"
         android:layout_alignParentStart="true"
-        android:id="@+id/editText3"
+        android:id="@+id/outputKeyEditText"
         android:layout_alignParentEnd="true"
         android:background="@color/colorEditText"
         android:textSize="25dp"/>
@@ -89,7 +89,7 @@
         android:text="Значение"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText3"
+        android:layout_below="@+id/outputKeyEditText"
         android:textSize="25dp"
         android:textColor="@color/colorTextView"
         android:id="@+id/textView6" />
@@ -101,7 +101,7 @@
         android:ems="10"
         android:layout_below="@+id/textView6"
         android:layout_alignParentStart="true"
-        android:id="@+id/editText4"
+        android:id="@+id/outputValueeditText"
         android:layout_alignParentEnd="true"
         android:background="@color/colorEditText"
         android:textSize="25dp"/>
