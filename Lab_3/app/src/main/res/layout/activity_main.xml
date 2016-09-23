@@ -105,4 +105,12 @@
         android:layout_alignParentEnd="true"
         android:background="@color/colorEditText"
         android:textSize="25dp"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TesttextView"
+        android:layout_below="@+id/outputValueeditText"
+        android:layout_alignEnd="@+id/textView5" />
 </RelativeLayout>

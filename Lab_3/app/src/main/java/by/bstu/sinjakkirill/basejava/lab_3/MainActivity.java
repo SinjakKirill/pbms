@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +28,6 @@ public class MainActivity extends AppCompatActivity {
         File f = new File(super.getFilesDir(), fileName);
         //f.delete();
 
-        /*String key = "12345";
-        int k = key.hashCode();
-        inputValue.setText(k);*/
-
-
         if(!ExistBase(fileName)){
             try{
                 f.createNewFile();
@@ -41,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Log_03", "Не удалось создать файл " + fileName);
             }
         }
+
+
         try {
-            RandomAccessFile rafile = new RandomAccessFile(f, "rw");
-            //rafile.seek(30);
+            /*RandomAccessFile rafile = new RandomAccessFile(f, "rw");
             int i = 99;
             rafile.writeChars("12345kirillsinj" + i);
             rafile.seek(30);
@@ -71,22 +68,59 @@ public class MainActivity extends AppCompatActivity {
 
             int q = (int)rafile1.length();
             inputKey.setText(Integer.toString(q));
-            rafile.close();
+            rafile.close();*/
 
             /////////////////////////
             EditText outText = (EditText) findViewById(R.id.outputValueeditText);
-            char[] d = new char[3];
+            /*String _str1 = new String("kkkkk");    // hashCode = 9;
+            String _str2 = new String("mmmmm");    // hashCode = 4;
+            String _str3 = new String("sssss");    // hashCode
+            String _str4 = new String("ddddd");    // hashCode
+            String _str5 = new String("qqqqq");    // hashCode
+
+            int number1 = hashCode(_str1);
+            int number2 = hashCode(_str2);
+            int number3 = hashCode(_str3);
+            int number4 = hashCode(_str4);
+            int number5 = hashCode(_str5);*/
+
+            writeData("kiri1", "1234567890", f, 0);
+            writeData("marg2", "0987654321", f, 1);
+            writeData("kiri3", "1234567890", f, 2);
+            writeData("marg4", "0987654321", f, 3);
+            writeData("kiri5", "1234567890", f, 4);
+            writeData("marg6", "0987654321", f, 5);
+            writeData("kiri7", "1234567890", f, 6);
+            writeData("marg8", "0987654321", f, 7);
+            writeData("kiri9", "1234567890", f, 8);
+            writeData("mar10", "0987654321", f, 9);
+            //outText.setText(number1 + " " + number2 + " " + number3 + " " + number4 + " " + number5);
+
+            try{
+                RandomAccessFile rf = new RandomAccessFile(f, "rw");
+                byte[] _text = new byte[(int)f.length()];
+                rf.read(_text);
+                String _textString = new String(_text, "UTF-16");
+                TextView text = (TextView) findViewById(R.id.TesttextView);
+                text.setText(_textString);
+            }
+            catch (IOException e){
+                Log.d("Log_03", "Ошибка считывания.");
+            }
+
+
+            /*char[] d = new char[3];
             d[0] = 'a';
             d[1] = 'f';
             d[2] = 'q';
             int ppp = d[0] + d[1] + d[2];
             outText.setText(Integer.toString(hashCode("afq")));
-            String s = new String(outText.getText().toString());
+            String s = new String(outText.getText().toString());*/
             /////////////////////////
 
-            Log.d("Lab_03", "Данные успешно записаны " + sss);
+            //Log.d("Lab_03", "Данные успешно записаны " + sss);
         }
-        catch (IOException e){
+        catch (Exception e){
             Log.d("Lab_03", "Не удалось записать данные");
         }
     }
@@ -107,6 +141,21 @@ public class MainActivity extends AppCompatActivity {
         for(int f = 0; f < arr.length; f++)
             number += arr[f];
         return number % 10;
+    }
+
+    boolean writeData(String key, String value, File file, int number){
+        try {
+            RandomAccessFile raFile = new RandomAccessFile(file, "rw");
+            int numberStr = number; //hashCode(key);
+            raFile.seek(numberStr * 36);
+            raFile.writeChars(key + value);
+            raFile.close();
+            Log.d("Log_03", "Данные успешно записаны.");
+        }
+        catch (IOException e){
+            Log.d("Log_03", e.getMessage());
+        }
+        return true;
     }
 
 }
