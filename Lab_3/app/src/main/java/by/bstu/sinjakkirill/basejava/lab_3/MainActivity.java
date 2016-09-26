@@ -26,13 +26,21 @@ public class MainActivity extends AppCompatActivity {
         EditText inputKey = (EditText) findViewById(R.id.inputKeyeditText);
         EditText inputValue = (EditText) findViewById(R.id.inputValueeditText);
         File f = new File(super.getFilesDir(), fileName);
-        //f.delete();
+        f.delete();
 
         if(!ExistBase(fileName)){
             try{
-                f.createNewFile();
+                RandomAccessFile rafile = new RandomAccessFile(f, "rw");
+                rafile.seek(0);
+                rafile.writeChars("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+                /*for(int i = 0; i < 6; i++){
+                    RandomAccessFile rafile = new RandomAccessFile(f, "rw");
+                    rafile.seek(i);
+                    rafile.writeChars("000000");
+                    rafile.close();
+                }*/
                 Log.d("Log_03", "Файл " + fileName + " успешно создан");
-            }
+        }
             catch (IOException e){
                 Log.d("Log_03", "Не удалось создать файл " + fileName);
             }
@@ -40,51 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            /*RandomAccessFile rafile = new RandomAccessFile(f, "rw");
-            int i = 99;
-            rafile.writeChars("12345kirillsinj" + i);
-            rafile.seek(30);
-            rafile.writeChars("0" + i);
-            rafile.close();
-            RandomAccessFile rafile1 = new RandomAccessFile(f, "rw");
-
-            byte[] b = new byte[(int)rafile1.length()];
-            byte[] b1 = new byte[6];
-
-            rafile1.read(b);
-
-            rafile1.seek(30);
-            rafile1.read(b1);
-
-            String sss = new String(b, "UTF-16");
-
-            inputValue.setText(sss);
-
-            String sss1 = new String(b1, "UTF-16");
-            int key;
-            key = Integer.parseInt(sss1);
-            EditText outKey = (EditText) findViewById(R.id.outputKeyEditText);
-            outKey.setText(Integer.toString(key));
-
-            int q = (int)rafile1.length();
-            inputKey.setText(Integer.toString(q));
-            rafile.close();*/
-
             /////////////////////////
             EditText outText = (EditText) findViewById(R.id.outputValueeditText);
-            /*String _str1 = new String("kkkkk");    // hashCode = 9;
-            String _str2 = new String("mmmmm");    // hashCode = 4;
-            String _str3 = new String("sssss");    // hashCode
-            String _str4 = new String("ddddd");    // hashCode
-            String _str5 = new String("qqqqq");    // hashCode
 
-            int number1 = hashCode(_str1);
-            int number2 = hashCode(_str2);
-            int number3 = hashCode(_str3);
-            int number4 = hashCode(_str4);
-            int number5 = hashCode(_str5);*/
-
-            writeData("kiri1", "1234567890", f, 0);
+            /*writeData("kiri1", "1234567890", f, 0);
             writeData("marg2", "0987654321", f, 1);
             writeData("kiri3", "1234567890", f, 2);
             writeData("marg4", "0987654321", f, 3);
@@ -93,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
             writeData("kiri7", "1234567890", f, 6);
             writeData("marg8", "0987654321", f, 7);
             writeData("kiri9", "1234567890", f, 8);
-            writeData("mar10", "0987654321", f, 9);
+            writeData("mar10", "0987654321", f, 9);*/
+
             //outText.setText(number1 + " " + number2 + " " + number3 + " " + number4 + " " + number5);
 
             try{
@@ -107,18 +75,6 @@ public class MainActivity extends AppCompatActivity {
             catch (IOException e){
                 Log.d("Log_03", "Ошибка считывания.");
             }
-
-
-            /*char[] d = new char[3];
-            d[0] = 'a';
-            d[1] = 'f';
-            d[2] = 'q';
-            int ppp = d[0] + d[1] + d[2];
-            outText.setText(Integer.toString(hashCode("afq")));
-            String s = new String(outText.getText().toString());*/
-            /////////////////////////
-
-            //Log.d("Lab_03", "Данные успешно записаны " + sss);
         }
         catch (Exception e){
             Log.d("Lab_03", "Не удалось записать данные");
