@@ -73,18 +73,6 @@
         android:textColor="@color/colorTextView"
         android:id="@+id/textView5" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/textView5"
-        android:layout_alignParentStart="true"
-        android:id="@+id/outputKeyEditText"
-        android:layout_alignParentEnd="true"
-        android:background="@color/colorEditText"
-        android:textSize="25dp"/>
-
     <TextView
         android:text="Значение"
         android:layout_width="wrap_content"
@@ -112,5 +100,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/TesttextView"
         android:layout_below="@+id/outputValueeditText"
-        android:layout_alignEnd="@+id/textView5" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/outputKeyEditText"
+        android:background="@color/colorEditText"
+        android:textSize="25dp"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

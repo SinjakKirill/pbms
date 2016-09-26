@@ -7,7 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.regex.Matcher;
@@ -30,15 +32,14 @@ public class MainActivity extends AppCompatActivity {
 
         if(!ExistBase(fileName)){
             try{
-                RandomAccessFile rafile = new RandomAccessFile(f, "rw");
-                rafile.seek(0);
-                rafile.writeChars("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-                /*for(int i = 0; i < 6; i++){
-                    RandomAccessFile rafile = new RandomAccessFile(f, "rw");
-                    rafile.seek(i);
-                    rafile.writeChars("000000");
-                    rafile.close();
-                }*/
+                f.createNewFile();
+                RandomAccessFile rf = new RandomAccessFile(f, "rw");
+                for (int i = 0; i < 360; i++) {
+                    rf.writeChar('0');
+                }
+                EditText e = (EditText) findViewById(R.id.inputKeyeditText);
+                e.setText(Integer.toString((int)rf.length()));
+                rf.close();
                 Log.d("Log_03", "Файл " + fileName + " успешно создан");
         }
             catch (IOException e){
@@ -48,26 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         try {
-            /////////////////////////
-            EditText outText = (EditText) findViewById(R.id.outputValueeditText);
-
-            /*writeData("kiri1", "1234567890", f, 0);
-            writeData("marg2", "0987654321", f, 1);
-            writeData("kiri3", "1234567890", f, 2);
-            writeData("marg4", "0987654321", f, 3);
-            writeData("kiri5", "1234567890", f, 4);
-            writeData("marg6", "0987654321", f, 5);
-            writeData("kiri7", "1234567890", f, 6);
-            writeData("marg8", "0987654321", f, 7);
-            writeData("kiri9", "1234567890", f, 8);
-            writeData("mar10", "0987654321", f, 9);*/
-
-            //outText.setText(number1 + " " + number2 + " " + number3 + " " + number4 + " " + number5);
-
             try{
                 RandomAccessFile rf = new RandomAccessFile(f, "rw");
                 byte[] _text = new byte[(int)f.length()];
                 rf.read(_text);
+                rf.writeChar('6');
                 String _textString = new String(_text, "UTF-16");
                 TextView text = (TextView) findViewById(R.id.TesttextView);
                 text.setText(_textString);
