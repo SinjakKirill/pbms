@@ -28,18 +28,17 @@ public class MainActivity extends AppCompatActivity {
         EditText inputKey = (EditText) findViewById(R.id.inputKeyeditText);
         EditText inputValue = (EditText) findViewById(R.id.inputValueeditText);
         File f = new File(super.getFilesDir(), fileName);
-        f.delete();
+        //f.delete();
 
         if(!ExistBase(fileName)){
             try{
                 f.createNewFile();
                 RandomAccessFile rf = new RandomAccessFile(f, "rw");
-                for (int i = 0; i < 360; i++) {
+                for (int i = 0; i < 180; i++) {
                     rf.writeChar('0');
                 }
-                EditText e = (EditText) findViewById(R.id.inputKeyeditText);
-                e.setText(Integer.toString((int)rf.length()));
                 rf.close();
+                writeData("sonya", "1234567890", f);
                 Log.d("Log_03", "Файл " + fileName + " успешно создан");
         }
             catch (IOException e){
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 RandomAccessFile rf = new RandomAccessFile(f, "rw");
                 byte[] _text = new byte[(int)f.length()];
                 rf.read(_text);
-                //rf.writeChar('6');
                 String _textString = new String(_text, "UTF-16");
                 TextView text = (TextView) findViewById(R.id.TesttextView);
                 text.setText(_textString);
@@ -104,23 +102,29 @@ public class MainActivity extends AppCompatActivity {
                 raFile.writeChars(key + value);
             }
             else{
-                raFile.seek(numberStr * 36 + 30);
-                int lengthFile = (int)raFile.length();
+                int point = numberStr * 36;
                 boolean numb = true;
                 while (numb){
-                    raFile.seek(numberStr * 36);
+                    int twoPoint;
+                    raFile.seek(point + 30);
+                    byte[] pointByte = new byte[6];
+                    raFile.read(pointByte);
+                    twoPoint = Integer.valueOf(new String(pointByte, "utf-16"));
+                    if(twoPoint == 0){
+                        raFile.seek(point + 30);
+                        raFile.writeChars(Integer.toString((int)raFile.length()));
 
+                        EditText q = (EditText) findViewById(R.id.inputKeyeditText);
+                        q.setText(Integer.toString(point));
+                        Log.d("Log_03", "Значение последнего указателя в списке: " + point);
+                        numb = false;
+                    }
+                    else{
+                        point = twoPoint;
+                    }
                 }
-                Log.d("Log_03", "Место в таблице занято, переход на позицию: " + lengthFile);
-                if(lengthFile <= 99){
-                    raFile.writeChars("0" + Integer.toString((int) raFile.length()));
-                }
-                else {
-                    raFile.writeChars(Integer.toString((int) raFile.length()));
-                }
-                raFile.seek(lengthFile);
+                raFile.seek((int)raFile.length());
                 raFile.writeChars(key + value + "000");
-                Log.d("Log_03", "Данные успешно записаны в конец таблицы." + lengthFile);
             }
             raFile.close();
             Log.d("Log_03", "Данные успешно записаны.");
