@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Log_03", "Не удалось создать файл " + fileName);
             }
         }
+        else{
+            writeData("sonya", "1234567890", f);
+            Log.d("Log_03", "Данные записаны в таблицу");
+        }
 
 
         try {
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 RandomAccessFile rf = new RandomAccessFile(f, "rw");
                 byte[] _text = new byte[(int)f.length()];
                 rf.read(_text);
-                rf.writeChar('6');
+                //rf.writeChar('6');
                 String _textString = new String(_text, "UTF-16");
                 TextView text = (TextView) findViewById(R.id.TesttextView);
                 text.setText(_textString);
@@ -85,18 +89,50 @@ public class MainActivity extends AppCompatActivity {
         return number % 10;
     }
 
-    boolean writeData(String key, String value, File file, int number){
+    boolean writeData(String key, String value, File file){
         try {
             RandomAccessFile raFile = new RandomAccessFile(file, "rw");
-            int numberStr = number; //hashCode(key);
+            int numberStr = hashCode(key);
             raFile.seek(numberStr * 36);
-            raFile.writeChars(key + value);
+            byte[] checkString = new byte[10];
+            raFile.read(checkString);
+            String _checkString = new String(checkString, "UTF-16");
+            Log.d("Log_03", "String _checkString: " + _checkString);
+            if(_checkString.equals("00000")){
+                Log.d("Log_03", "Процес записи: " + key + " " + value);
+                raFile.seek(numberStr * 36);
+                raFile.writeChars(key + value);
+            }
+            else{
+                raFile.seek(numberStr * 36 + 30);
+                int lengthFile = (int)raFile.length();
+                boolean numb = true;
+                while (numb){
+                    raFile.seek(numberStr * 36);
+
+                }
+                Log.d("Log_03", "Место в таблице занято, переход на позицию: " + lengthFile);
+                if(lengthFile <= 99){
+                    raFile.writeChars("0" + Integer.toString((int) raFile.length()));
+                }
+                else {
+                    raFile.writeChars(Integer.toString((int) raFile.length()));
+                }
+                raFile.seek(lengthFile);
+                raFile.writeChars(key + value + "000");
+                Log.d("Log_03", "Данные успешно записаны в конец таблицы." + lengthFile);
+            }
             raFile.close();
             Log.d("Log_03", "Данные успешно записаны.");
         }
         catch (IOException e){
             Log.d("Log_03", e.getMessage());
+            return false;
         }
+        return true;
+    }
+
+    boolean readData(String key, File file){
         return true;
     }
 
