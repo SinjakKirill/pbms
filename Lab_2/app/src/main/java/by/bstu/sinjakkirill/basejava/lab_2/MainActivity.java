@@ -34,13 +34,15 @@ public class MainActivity extends AppCompatActivity {
             try{
                 FileWriter fw = new FileWriter(f, true);
                 BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(textName.getText() + " " + textSurname.getText() + "; " + "\r\n");
-                bw.close();
+                if(!textName.getText().toString().equals("") && !textSurname.getText().toString().equals("")) {
+                    bw.write(textName.getText() + " " + textSurname.getText() + "; " + "\r\n");
+                    bw.close();
+                    Log.d("Log_2", "Данные записаны в файл " + fileName);
+                }
                 textName.setText("");
                 textSurname.setText("");
                 textName.setHint("Name");
                 textSurname.setHint("Surname");
-                Log.d("Log_2", "Данные записаны в файл " + fileName);
             }
             catch (IOException e){
                 Log.d("Log_2", "Не удалось открыть " + fileName);

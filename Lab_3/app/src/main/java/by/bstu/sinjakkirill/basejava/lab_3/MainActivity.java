@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
                     //создание файла, если он не существует
                     f.createNewFile();
                     RandomAccessFile rf = new RandomAccessFile(f, "rw");
-                    for (int i = 0; i < 180; i++) {
+                    for (int i = 0; i < 170; i++) {
                         rf.writeChar('0');
                     }
                     rf.close();
@@ -104,20 +105,19 @@ public class MainActivity extends AppCompatActivity {
         try {
             RandomAccessFile raFile = new RandomAccessFile(file, "rw");
             int numberStr = hashCode(key);
-            raFile.seek(numberStr * 36);
+            raFile.seek(numberStr * 34);
             byte[] checkString = new byte[10];
             raFile.read(checkString);
             String _checkString = new String(checkString, "UTF-16");
             Log.d("Log_03", "String _checkString: " + _checkString);
             if(_checkString.equals("00000")){
                 Log.d("Log_03", "Процес записи: " + key + " " + value);
-                raFile.seek(numberStr * 36);
+                raFile.seek(numberStr * 34);
                 raFile.writeChars(key + value);
             }
             else{
-                int point = numberStr * 36;
+                int point = numberStr * 34;
                 boolean numb = true;
-                //boolean checkWrite = false;
                 while (numb){
                     //проверка на совпадение ключей
                     byte[] checkKey = new byte[10];
@@ -127,32 +127,31 @@ public class MainActivity extends AppCompatActivity {
                     if(qwe.equals(key)){
                         raFile.seek(point + 10);
                         raFile.writeChars(value);
-                        //checkWrite = true;
                         numb = false;
                         break;
                     }
-                        int twoPoint;
+                        int twoPoint = -1;
                         raFile.seek(point + 30);
-                        byte[] pointByte = new byte[6];
+                        byte[] pointByte = new byte[4];
                         raFile.read(pointByte);
-                        twoPoint = Integer.valueOf(new String(pointByte, "utf-16"));
+                        try {
+                            twoPoint = Integer.valueOf(new String(pointByte, "utf-16"));
+                        }
+                        catch (Exception e){
+
+                        }
                         if (twoPoint == 0) {
                             raFile.seek(point + 30);
-                            raFile.writeChars(Integer.toString((int) raFile.length()));
+                            raFile.write(intToByteArray((int)raFile.length(), 4));
                             raFile.seek((int)raFile.length());
-                            raFile.writeChars(key + value + "000");
+                            raFile.writeChars(key + value + "00");
                             Log.d("Log_03", "Значение последнего указателя в списке: " + point);
                             numb = false;
                         } else {
+                            twoPoint = byteArrayToInt(pointByte, 0, 4);
                             point = twoPoint;
                         }
                     }
-                /*if(!checkWrite){
-                    raFile.seek((int)raFile.length());
-                    raFile.writeChars(key + value + "000");
-                }*/
-                //raFile.seek((int)raFile.length());
-                //raFile.writeChars(key + value + "000");
             }
             raFile.close();
             Log.d("Log_03", "Данные успешно записаны.");
@@ -164,8 +163,84 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    boolean readData(String key, File file) {
+    boolean readData(String key, File file, View view) {
+        try {
+            RandomAccessFile raFile = new RandomAccessFile(file, "rw");
+            int numberStr = hashCode(key);
+            raFile.seek(numberStr * 34);
+            byte[] checkString = new byte[10];
+            raFile.read(checkString);
+            String _checkString = new String(checkString, "UTF-16");
+            Log.d("Log_03", "String _checkString: " + _checkString);
+            if(_checkString.equals("00000")){
+                //Log.d("Log_03", "Процес записи: " + key + " ");
+                //raFile.seek(numberStr * 34);
+                //raFile.writeChars(key);
+                
+            }
+            else{
+                int point = numberStr * 34;
+                boolean numb = true;
+                while (numb){
+                    //проверка на совпадение ключей
+                    byte[] checkKey = new byte[10];
+                    raFile.seek(point);
+                    raFile.read(checkKey);
+                    String qwe = new String(checkKey, "utf-16");
+                    if(qwe.equals(key)){
+                        raFile.seek(point + 10);
+                        raFile.writeChars("");
+                        numb = false;
+                        break;
+                    }
+                    int twoPoint = -1;
+                    raFile.seek(point + 30);
+                    byte[] pointByte = new byte[4];
+                    raFile.read(pointByte);
+                    try {
+                        twoPoint = Integer.valueOf(new String(pointByte, "utf-16"));
+                    }
+                    catch (Exception e){
+
+                    }
+                    if (twoPoint == 0) {
+                        raFile.seek(point + 30);
+                        raFile.write(intToByteArray((int)raFile.length(), 4));
+                        raFile.seek((int)raFile.length());
+                        raFile.writeChars(key + "00");
+                        Log.d("Log_03", "Значение последнего указателя в списке: " + point);
+                        numb = false;
+                    } else {
+                        twoPoint = byteArrayToInt(pointByte, 0, 4);
+                        point = twoPoint;
+                    }
+                }
+            }
+            raFile.close();
+            Log.d("Log_03", "Данные успешно записаны.");
+        }
+        catch (IOException e){
+            Log.d("Log_03", e.getMessage());
+            return false;
+        }
         return true;
+    }
+
+
+    private static byte[] intToByteArray(int n, int byteCount) {
+        byte[] res = new byte[byteCount];
+        for (int i = 0; i < byteCount; i++)
+            res[byteCount - i - 1] = (byte) ((n >> i * 8) & 255);
+        return res;
+    }
+
+    private static int byteArrayToInt(byte[] b, int start, int length) {
+        int dt = 0;
+        if ((b[start] & 0x80) != 0)
+            dt = Integer.MAX_VALUE;
+        for (int i = 0; i < length; i++)
+            dt = (dt << 8) + (b[start++] & 255);
+        return dt;
     }
 
 }
