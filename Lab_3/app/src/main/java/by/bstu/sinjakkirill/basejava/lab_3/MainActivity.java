@@ -80,6 +80,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void getData(View view){
+        EditText outKey = (EditText) findViewById(R.id.outputKeyEditText);
+        EditText outValue = (EditText) findViewById(R.id.outputValueeditText);
+        final String fileName = "Lab_03.txt";
+        File f = new File(super.getFilesDir(), fileName);
+        readData(outKey.getText().toString(), f, outValue);
+    }
+
     //проверка существования файла
     private boolean ExistBase(String fname){
         boolean rc = false;
@@ -138,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                             twoPoint = Integer.valueOf(new String(pointByte, "utf-16"));
                         }
                         catch (Exception e){
-
+                            Log.d("Log_03", "Преобразование не возможно -> есть указатель.");
                         }
                         if (twoPoint == 0) {
                             raFile.seek(point + 30);
@@ -163,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    boolean readData(String key, File file, View view) {
+    boolean readData(String key, File file, TextView textView) {
         try {
             RandomAccessFile raFile = new RandomAccessFile(file, "rw");
             int numberStr = hashCode(key);
@@ -176,7 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 //Log.d("Log_03", "Процес записи: " + key + " ");
                 //raFile.seek(numberStr * 34);
                 //raFile.writeChars(key);
-                
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Такого ключа нет в таблице.", Toast.LENGTH_SHORT);
+                toast.show();
             }
             else{
                 int point = numberStr * 34;
@@ -189,7 +199,9 @@ public class MainActivity extends AppCompatActivity {
                     String qwe = new String(checkKey, "utf-16");
                     if(qwe.equals(key)){
                         raFile.seek(point + 10);
-                        raFile.writeChars("");
+                        byte[] value = new byte[20];
+                        raFile.read(value);
+                        textView.setText(new String(value, "UTF-16"));
                         numb = false;
                         break;
                     }
@@ -204,11 +216,9 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     if (twoPoint == 0) {
-                        raFile.seek(point + 30);
-                        raFile.write(intToByteArray((int)raFile.length(), 4));
-                        raFile.seek((int)raFile.length());
-                        raFile.writeChars(key + "00");
-                        Log.d("Log_03", "Значение последнего указателя в списке: " + point);
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Такого ключа нет в таблице.", Toast.LENGTH_SHORT);
+                        toast.show();
                         numb = false;
                     } else {
                         twoPoint = byteArrayToInt(pointByte, 0, 4);
