@@ -181,9 +181,6 @@ public class MainActivity extends AppCompatActivity {
             String _checkString = new String(checkString, "UTF-16");
             Log.d("Log_03", "String _checkString: " + _checkString);
             if(_checkString.equals("00000")){
-                //Log.d("Log_03", "Процес записи: " + key + " ");
-                //raFile.seek(numberStr * 34);
-                //raFile.writeChars(key);
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "Такого ключа нет в таблице.", Toast.LENGTH_SHORT);
                 toast.show();

@@ -84,15 +84,6 @@
         android:background="@color/colorEditText"
         android:textSize="25dp"/>
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/TesttextView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -123,6 +114,16 @@
         android:onClick="getData"
         android:layout_below="@+id/outputValueeditText"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="13dp"
         android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button1"
+        android:id="@+id/TesttextView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"/>
+
+
+
 </RelativeLayout>
