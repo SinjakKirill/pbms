@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#41b53f</color>
+    <color name="colorPrimaryDark">#349f30</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorSelectWeek">#ed70c47c</color>
+    <color name="colorBackgroundCalender">#b9ffffff</color>
+    <color name="colorTextDate">#feffffff</color>
+    <color name="colorSaveButton">#ed70c47c</color>
+    <color name="colorClearButton">#e2ed7274</color>
+</resources>
