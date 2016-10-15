@@ -10,26 +10,27 @@
     <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="273dp"
         android:orientation="vertical"
         >
 
         <CalendarView
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="271dp"
             android:selectedWeekBackgroundColor="@color/colorSelectWeek"
             android:showWeekNumber="false"
             android:background="@color/colorBackgroundCalender"/>
 
     </LinearLayout>
 
-    <TextView
+    <AutoCompleteTextView
+        android:text="add note..."
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:paddingTop="15dp"
-        android:paddingLeft="15dp"
-        android:text="Insert note...____________________________________"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/NoteTextView"
+        android:layout_weight="0.50"
+        android:paddingTop="0dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -45,10 +46,11 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_toEndOf="@+id/button"
-            android:background="@color/colorSaveButton"/>
+            android:background="@color/colorSaveButton"
+            android:onClick="saveNote"/>
 
         <Button
-            android:text="Clear"
+            android:text="DELETE"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -56,10 +58,10 @@
             android:background="@color/colorClearButton"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="15dp"/>
+            android:layout_marginStart="15dp"
+            android:onClick="deleteNote"/>
 
     </RelativeLayout>
-
 
 </LinearLayout>
 
