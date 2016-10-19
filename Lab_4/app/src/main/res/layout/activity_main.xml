@@ -29,8 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/NoteTextView"
-        android:layout_weight="0.50"
-        android:paddingTop="0dp"/>
+        android:paddingTop="0dp"
+        android:layout_weight="0.06"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

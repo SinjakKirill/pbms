@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -29,78 +30,173 @@ public class MainActivity extends AppCompatActivity {
     Button addNote;
     Gson gson;
     AutoCompleteTextView notesTextView;
-    String d;
+    String selectDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        File f = new File(super.getFilesDir(), "notes.json");
+        /*File f = new File(super.getFilesDir(), "notes.json");
         try {
             f.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         // Связываемся с нашим календариком:
         mCalendarView = (CalendarView)findViewById(R.id.calendarView);
 
         //Настраиваем слушателя смены даты:
-        /*mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
+        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
 
             // Описываем метод выбора даты в календаре:
             @Override
             public void onSelectedDayChange(CalendarView view, int year,int month, int dayOfMonth) {
 
                 // При выборе любой даты отображаем Toast сообщение с данными о выбранной дате (Год, Месяц, День):
-                Toast.makeText(getApplicationContext(),
+                /*Toast.makeText(getApplicationContext(),
                         "Год: " + year + "\n" + "Месяц: " + month + "\n" + "День: " + dayOfMonth,
-                        Toast.LENGTH_SHORT).show();
-
-                addNote = (Button) findViewById(R.id.buttonAddNote);
-                Button button = (Button) findViewById(R.id.button);
-
-
-
+                        Toast.LENGTH_SHORT).show();*/
+                notesTextView = (AutoCompleteTextView) findViewById(R.id.NoteTextView);
+                notesTextView.setText("add note...");
+                String nameFile = new String("notes.json");
+                ArrayList<Note> noteList = getListNotes(nameFile);
+                selectDate = Integer.toString(year)
+                        + "." + Integer.toString(month)
+                        + "." + Integer.toString(dayOfMonth);
+                if(noteList != null){
+                    for (Note note :
+                            noteList) {
+                        if (note.mDate.equals(selectDate)){
+                            notesTextView.setText(note.mNotes);
+                        }
+                    }
+                }
             }
-        });*/
+        });
     }
 
     public void saveNote(View view){
         String fileName = new String("notes.json");
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         notesTextView = (AutoCompleteTextView) findViewById(R.id.NoteTextView);
-        List<Note> notes = getListNotes(fileName);
-        mCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener(){
-
-            // Описываем метод выбора даты в календаре:
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year,int month, int dayOfMonth) {
-                d = Integer.toString(year) + "." + Integer.toString(year) + "." + Integer.toString(year);
+        if(notesTextView.getText().toString().equals("add note...")){
+            Toast.makeText(getApplicationContext(),
+                    "Added note!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            gson = new Gson();
+            String strNote = new String();
+            ArrayList<Note> noteList = new ArrayList<>();
+            ArrayList<Note> notes = getListNotes(fileName);
+            if (notes == null) {
+                Note note = new Note(notesTextView.getText().toString(), selectDate);
+                noteList.add(note);
+                strNote = gson.toJson(noteList);
+                File file = new File(super.getFilesDir(), "notes.json");
+                try {
+                    FileWriter fileWriter = new FileWriter(file);
+                    fileWriter.write(strNote);
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getApplicationContext(),
+                        strNote,
+                        Toast.LENGTH_SHORT).show();
             }
-        });
-        if(notes == null){
-
+            else{
+                boolean point = false;
+                for (Note note :
+                        notes) {
+                    if(note.mDate.equals(selectDate))
+                    {
+                        note.mNotes = notesTextView.getText().toString();
+                        point = true;
+                    }
+                }
+                if(point){
+                    File file = new File(super.getFilesDir(), fileName);
+                    try {
+                        FileWriter fileWriter = new FileWriter(file);
+                        String strNotes = gson.toJson(notes);
+                        fileWriter.write(strNotes);
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Note note = new Note(notesTextView.getText().toString(), selectDate);
+                    notes.add(note);
+                    String newStrNote = gson.toJson(notes);
+                    File file = new File(super.getFilesDir(), fileName);
+                    try {
+                        FileWriter fileWriter = new FileWriter(file);
+                        fileWriter.write(newStrNote);
+                        fileWriter.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    /*Toast.makeText(getApplicationContext(),
+                            "Будет создан новый Note!",
+                            Toast.LENGTH_SHORT).show();*/
+                }
+            }
         }
-        else{
 
-        }
-        d = null;
+
+        /*File file = new File(super.getFilesDir(), "notes.json");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
     }
 
     public void deleteNote(View view){
         String fileName = new String("notes.json");
-        File fileJson = new File(super.getFilesDir(), fileName);
-        gson = new Gson();
-        String jsonStrNotes = new String();
+        notesTextView = (AutoCompleteTextView) findViewById(R.id.NoteTextView);
+        if(notesTextView.getText().toString().equals("add note...")){
+            Toast.makeText(getApplicationContext(),
+                    "Added note!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        else {
+            gson = new Gson();
+            ArrayList<Note> noteArrayList = getListNotes(fileName);
+            int index = 0;
+            if(noteArrayList != null){
+                for(int i = 0; i < noteArrayList.size(); i++){
+                    if(noteArrayList.get(i).mDate == selectDate)
+                        index = i;
+                }
+                noteArrayList.remove(index);
+                String strNotes = gson.toJson(noteArrayList);
+                File file = new File(super.getFilesDir(), fileName);
+                try {
+                    FileWriter fileWriter = new FileWriter(file);
+                    fileWriter.write(strNotes);
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                notesTextView.setText("add note...");
+            }
+            else{
+                Toast.makeText(getApplicationContext(),
+                        "Нет сохраненных записей!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
-    public List<Note> getListNotes(String pathName){
+    public ArrayList<Note> getListNotes(String pathName){
         File file = new File(super.getFilesDir(), pathName);
         Type type = new TypeToken<ArrayList<Note>>(){}.getType();
         String jsonStrNotes = new String();
-        List<Note> notes;
+        ArrayList<Note> notes;
         gson = new Gson();
         try {
             FileReader fileReader = new FileReader(file);
