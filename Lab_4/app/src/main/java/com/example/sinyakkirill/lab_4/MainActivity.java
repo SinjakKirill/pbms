@@ -36,14 +36,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        /*File f = new File(super.getFilesDir(), "notes.json");
-        try {
-            f.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         // Связываемся с нашим календариком:
         mCalendarView = (CalendarView)findViewById(R.id.calendarView);
 
@@ -53,12 +45,8 @@ public class MainActivity extends AppCompatActivity {
             // Описываем метод выбора даты в календаре:
             @Override
             public void onSelectedDayChange(CalendarView view, int year,int month, int dayOfMonth) {
-
-                // При выборе любой даты отображаем Toast сообщение с данными о выбранной дате (Год, Месяц, День):
-                /*Toast.makeText(getApplicationContext(),
-                        "Год: " + year + "\n" + "Месяц: " + month + "\n" + "День: " + dayOfMonth,
-                        Toast.LENGTH_SHORT).show();*/
                 notesTextView = (AutoCompleteTextView) findViewById(R.id.NoteTextView);
+                //notesTextView.setCompletionHint("add note...");
                 notesTextView.setText("add note...");
                 String nameFile = new String("notes.json");
                 ArrayList<Note> noteList = getListNotes(nameFile);
@@ -139,20 +127,12 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    /*Toast.makeText(getApplicationContext(),
-                            "Будет создан новый Note!",
-                            Toast.LENGTH_SHORT).show();*/
                 }
+                Toast.makeText(getApplicationContext(),
+                        "Запись сохранена!",
+                        Toast.LENGTH_SHORT).show();
             }
         }
-
-
-        /*File file = new File(super.getFilesDir(), "notes.json");
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
     public void deleteNote(View view){
@@ -183,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 notesTextView.setText("add note...");
+                Toast.makeText(getApplicationContext(),
+                        "Запись удалена!",
+                        Toast.LENGTH_SHORT).show();
             }
             else{
                 Toast.makeText(getApplicationContext(),
